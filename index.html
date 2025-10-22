@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pemilu 1955 — WTRR</title>
+  <meta name="description" content="Materi lengkap Pemilu 1955 (versi panjang) dengan tampilan klasik vintage, timeline interaktif, dan kuis. Cocok untuk tugas sekolah dan publikasi online." />
+  <style>
+    /* --------- Base / Vintage Theme --------- */
+    :root{
+      --paper:#f3e9dc; /* parchment */
+      --ink:#2b2a29;
+      --accent:#8b3a2b; /* maroon brown */
+      --muted:#6b5a4a;
+      --maxw:1100px;
+      --serif: Georgia, 'Times New Roman', Times, serif;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:var(--serif);color:var(--ink);background: 
+  linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.85)),
+  url('download.jpg') no-repeat center top;
+background-size: cover;
+background-attachment: fixed;
+}
+
+    /* subtle paper texture using SVG data URL */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:-1;opacity:0.9;background-image:linear-gradient(180deg, rgba(0,0,0,0.02) 0%, rgba(255,255,255,0.02) 100%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><defs><filter id="g"><feTurbulence baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/></filter></defs><rect width="100%" height="100%" fill="%23f3e9dc" filter="url(%23g)"/></svg>');background-size:cover;mix-blend-mode:multiply}
+
+    .container{max-width:var(--maxw);margin:28px auto;padding:32px}
+    header{display:flex;gap:18px;align-items:center}
+    .seal{width:88px;height:88px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#b36b54);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:24px;box-shadow:0 6px 18px rgba(139,58,43,0.25)}
+    h1{margin:0;font-size:1.6rem;letter-spacing:0.6px}
+    .subtitle{color:var(--muted);margin-top:6px}
+
+    main{display:grid;grid-template-columns:1fr 340px;gap:26px;margin-top:20px}
+    @media (max-width:980px){main{grid-template-columns:1fr} .sidebar{order:-1}}
+
+    /* content card looks like paper sheet */
+    .sheet{background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,253,246,0.98));padding:28px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);box-shadow:8px 12px 30px rgba(30,30,30,0.06)}
+    section h2{margin:0 0 8px 0;color:var(--accent)}
+    .meta{color:var(--muted);font-size:0.95rem;margin-bottom:12px}
+
+    /* typography for long material */
+    p{margin:10px 0}
+    ul{margin:8px 0 12px 20px}
+    ol{margin:8px 0 12px 20px}
+
+    /* decorative rule */
+    .rule{height:2px;background:linear-gradient(90deg, rgba(139,58,43,0.15), rgba(0,0,0,0));margin:18px 0;border-radius:2px}
+
+    /* timeline */
+    .timeline{position:relative;padding:18px 0}
+    .timeline::before{content:'';position:absolute;left:20px;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--accent),#b36b54);border-radius:4px}
+    .event{position:relative;padding:12px 12px 12px 56px;margin-bottom:18px;background:rgba(179,107,84,0.03);border-left:6px solid rgba(139,58,43,0.08);border-radius:6px}
+    .event .date{position:absolute;left: -8px;top:12px;background:#fff;border:2px solid var(--accent);width:52px;height:52px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent);box-shadow:0 6px 12px rgba(0,0,0,0.06)}
+    .event h4{margin:0 0 6px 0}
+    .event p{margin:0}
+
+    /* sidebar */
+    .sidebar .sheet{padding:18px}
+    .toc h3{margin:0;color:var(--accent)}
+    .toc ul{list-style:none;padding:0;margin:12px 0 0}
+    .toc li{margin-bottom:8px}
+    .toc a{color:var(--muted);text-decoration:none}
+
+    /* quiz */
+    .quiz .q{margin-bottom:14px;padding:12px;border-radius:8px;border:1px dashed rgba(139,58,43,0.12);background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.9))}
+    .options label{display:block;margin:6px 0;padding:8px;border-radius:6px;cursor:pointer}
+    input[type=radio]{margin-right:8px}
+    .btn{display:inline-block;padding:10px 14px;background:var(--accent);color:#fff;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+    .result{margin-top:12px;padding:12px;border-radius:8px;background:#fff7f3;border:1px solid rgba(139,58,43,0.06)}
+
+    /* watermark flag SVG in background of content */
+    .watermark{position:fixed;right:6%;top:30%;opacity:0.07;transform:rotate(-15deg);pointer-events:none}
+
+    footer{margin-top:18px;text-align:center;color:var(--muted);font-size:0.95rem}
+header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 32px;
+}
+
+header .logo {
+  width: 70px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  opacity: 0.95; /* sedikit transparan biar nyatu dengan tema */
+}
+    /* small responsive tweaks */
+    @media (max-width:520px){.event .date{left:-10px;transform:scale(0.9)} }
+  </style>
+</head>
+<body>
+  <div class="container">
+<header>
+  <img src="Bg.jpg" alt="Logo Sekolah" class="logo">
+  <div>
+    <h1>Pemilu 1955</h1>
+    <div class="subtitle">Materi Tentang Pemilu 1955</div>
+  </div>
+</header>
+
+
+    <main>
+      <article class="sheet">
+        <section id="intro">
+          <h2>Pendahuluan</h2>
+          <p>Pemilihan Umum (Pemilu) 1955 menandai babak penting dalam sejarah politik Indonesia: untuk pertama kalinya rakyat memilih wakil mereka secara langsung dalam skala nasional. Sebagai pemilu yang bersifat <strong>langsung, umum, bebas, dan rahasia (LUBER)</strong>, penyelenggaraan 1955 menjadi tolok ukur demokrasi awal republik ini.</p>
+          <div class="meta">Pelaksanaan: <strong>29 September 1955 (DPR)</strong> &amp; <strong>15 Desember 1955 (Konstituante)</strong> • Partisipasi: ~91% • Peserta: 36 partai + 18 golongan</div>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="latar-detail">
+          <h2>Latar Belakang — Mengapa Pemilu Diperlukan?</h2>
+          <p>Setelah proklamasi kemerdekaan (1945) dan berakhirnya masa revolusi fisik, Indonesia memasuki fase rekonstruksi politik. Transisi dari sistem presidensial ke parlementer, ketidakjelasan legitimasi lembaga-lembaga perwakilan, serta persaingan ideologis antar partai membuat negara memerlukan mekanisme yang jelas untuk menyalurkan kedaulatan rakyat: pemilihan umum.</p>
+
+          <h3 style="color:var(--ink)">Aspek politik dan sosial</h3>
+          <ul>
+            <li>Peralihan ke sistem parlementer (UUD Sementara 1950) meninggalkan kekosongan legitimasi untuk wakil rakyat yang belum dipilih secara langsung.</li>
+            <li>Muncul banyak partai politik dan organisasi masyarakat—menandakan kebebasan berekspresi, tetapi juga potensi fragmentasi.</li>
+            <li>Rakyat menunjukkan hasrat untuk terlibat dalam proses politik melalui pemilu sebagai instrumen perwakilan.</li>
+          </ul>
+
+          <h3 style="color:var(--ink)">Dasar hukum dan penyelenggara</h3>
+          <p>Pemilu diatur oleh <strong>UU No.7 Tahun 1953</strong> dan diselenggarakan oleh <strong>Panitia Pemilihan Indonesia (PPI)</strong>. UU ini mengatur siapa yang berhak memilih, tata pelaksanaan pemungutan suara, serta mekanisme penghitungan.</p>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="pelaksanaan-detail">
+          <h2>Pelaksanaan — Dua Tahap Utama</h2>
+          <p>Pemilu 1955 dilakukan dalam dua putaran terpisah: pemilihan DPR pada 29 September 1955 dan pemilihan Konstituante pada 15 Desember 1955. Masing-masing bertujuan berbeda namun saling berkaitan.</p>
+
+          <h3>Tantangan logistik</h3>
+          <p>PPI harus mengedarkan surat suara, kotak suara, dan perlengkapan ke seluruh kepulauan Indonesia—dengan kondisi infrastruktur yang terbatas. Pengiriman ke daerah terpencil membutuhkan kreativitas: perahu, kuda, dan perjalanan berhari-hari. Meski demikian, proses pemungutan berlangsung relatif tertib dan damai.</p>
+
+          <h3>Partisipasi dan antusiasme</h3>
+          <p>Antusiasme pemilih sangat tinggi—sekitar <strong>91%</strong> orang yang terdaftar datang untuk memilih. Keterlibatan rakyat ini mencerminkan keyakinan kuat terhadap proses demokrasi baru.</p>
+
+          <div style="margin-top:12px">
+            <strong>Fakta ringkas:</strong>
+            <ul>
+              <li>Peserta: <strong>36 partai politik</strong> dan <strong>18 golongan masyarakat</strong> (total 54 peserta).</li>
+              <li>Jumlah pemilih yang terdaftar: ~39 juta jiwa.</li>
+              <li>Tingkat partisipasi: ~91%.</li>
+            </ul>
+          </div>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="hasil-detal">
+          <h2>Hasil Pemilu untuk DPR — Analisis Lengkap</h2>
+          <p>Hasil pemilu menunjukkan polarisasi politik pada masa itu: empat kekuatan utama menonjol—PNI, Masyumi, NU, dan PKI—serta sejumlah partai kecil yang tersebar di berbagai daerah.</p>
+
+          <table style="width:100%;margin-top:8px;border-collapse:collapse">
+            <thead><tr><th style="text-align:left">Partai</th><th style="text-align:right">Kursi</th><th style="text-align:right">% Suara</th></tr></thead>
+            <tbody>
+              <tr><td>PNI (Partai Nasional Indonesia)</td><td style="text-align:right">57</td><td style="text-align:right">22.3%</td></tr>
+              <tr><td>Masyumi</td><td style="text-align:right">57</td><td style="text-align:right">20.9%</td></tr>
+              <tr><td>NU (Nahdlatul Ulama)</td><td style="text-align:right">45</td><td style="text-align:right">18.4%</td></tr>
+              <tr><td>PKI (Partai Komunis Indonesia)</td><td style="text-align:right">39</td><td style="text-align:right">16.4%</td></tr>
+              <tr><td>Lain-lain (gabungan 32 partai kecil)</td><td style="text-align:right">62</td><td style="text-align:right">~22%</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="margin-top:12px">Mengapa hasil ini penting?</h3>
+          <p>Karena tidak ada satu partai yang memperoleh mayoritas, parlemen harus bergantung pada koalisi. Koalisi yang sering berubah membuat kabinet rawan runtuh, dan kebijakan negara sulit tersentralisasi — sebuah pelajaran penting tentang dinamika politik plural.</p>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="ciri-dampak">
+          <h2>Ciri-ciri, Dampak, dan Makna</h2>
+          <h3>Ciri-ciri utama</h3>
+          <ul>
+            <li>Pemilu berjalan menurut prinsip LUBER (Langsung, Umum, Bebas, Rahasia).</li>
+            <li>Penyelenggara independen (PPI) yang bekerja di medan sulit.</li>
+            <li>Partisipasi tinggi dan relatif sedikit laporan kecurangan besar.</li>
+          </ul>
+
+          <h3>Dampak jangka pendek & panjang</h3>
+          <p><strong>Positif:</strong> Menegaskan kedaulatan rakyat, memberikan legitimasi pemerintahan, dan menjadi contoh bagi penyelenggaraan pemilu masa depan.</p>
+          <p><strong>Negatif:</strong> Fragmentasi politik, kabinet sering berganti, dan kegagalan Konstituante mencapai konsensus. Akibatnya, pada <strong>5 Juli 1959</strong> Presiden Soekarno mengeluarkan Dekret Presiden yang mengembalikan UUD 1945 — sebuah titik balik dalam politik Indonesia.</p>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="timeline">
+          <h2>Timeline Pelaksanaan</h2>
+          <div class="timeline" id="timeline">
+            <div class="event" data-year="1953">
+              <div class="date">1953</div>
+              <h4>UU No.7 Tahun 1953</h4>
+              <p>Undang-undang tentang Pemilihan Umum disahkan sebagai landasan hukum pelaksanaan pemilu.</p>
+            </div>
+            <div class="event" data-year="1955a">
+              <div class="date">29 Sep</div>
+              <h4>Pemilihan Anggota DPR</h4>
+              <p>Pemungutan suara nasional untuk memilih anggota DPR berlangsung pada tanggal 29 September 1955.</p>
+            </div>
+            <div class="event" data-year="1955b">
+              <div class="date">15 Des</div>
+              <h4>Pemilihan Anggota Konstituante</h4>
+              <p>Pemilihan untuk memilih wakil yang akan duduk di Konstituante untuk merumuskan UUD baru.</p>
+            </div>
+            <div class="event" data-year="1959">
+              <div class="date">1959</div>
+              <h4>Dekret Presiden 5 Juli 1959</h4>
+              <p>Karena kegagalan Konstituante menyusun UUD, Presiden Soekarno mengeluarkan dekret yang mengembalikan UUD 1945.</p>
+            </div>
+          </div>
+          <p style="margin-top:10px;color:var(--muted)"><em>Tips:</em> Klik salah satu item timeline untuk menyorotnya dan membaca detail.</p>
+        </section>
+
+        <div class="rule"></div>
+
+        <section id="nilai-diskusi">
+  <h2>Nilai-Nilai yang Dapat Dipetik</h2>
+  <p>Pemilu 1955 tidak hanya menjadi tonggak sejarah demokrasi Indonesia, tetapi juga sarana pembelajaran berharga bagi generasi penerus. Nilai-nilai yang terkandung di dalamnya meliputi:</p>
+  <ul>
+    <li><strong>Kedaulatan rakyat</strong> — rakyat berperan langsung menentukan arah pemerintahan.</li>
+    <li><strong>Partisipasi politik</strong> — kesadaran warga negara untuk ikut serta dalam proses demokrasi.</li>
+    <li><strong>Kejujuran dan integritas</strong> — penyelenggaraan pemilu yang relatif bersih dan adil.</li>
+    <li><strong>Tanggung jawab</strong> — baik dari peserta maupun penyelenggara pemilu.</li>
+    <li><strong>Pentingnya stabilitas politik</strong> — demokrasi yang sehat harus diimbangi kestabilan pemerintahan.</li>
+  </ul>
+  <p>Nilai-nilai ini tetap relevan hingga kini sebagai fondasi untuk memperkuat demokrasi di Indonesia modern.</p>
+</section>
+        <div class="rule"></div>
+
+        <section id="kuis-full">
+  <h2>Kuis — 5 Soal Pilihan Ganda (A–E)</h2>
+  <p>Jawab semua soal lalu klik <strong>Periksa Jawaban</strong>. Skor beserta pembahasan akan muncul di bawah.</p>
+
+  <form id="quizForm" class="quiz">
+    <div class="q">
+      <strong>1. Apa alasan utama diadakannya Pemilu 1955 di Indonesia?</strong>
+      <div class="options">
+        <label><input type="radio" name="q1" value="A"> A. Menggantikan sistem presidensial menjadi parlementer</label>
+        <label><input type="radio" name="q1" value="B"> B. Menyalurkan kedaulatan rakyat melalui pemilihan wakil secara langsung</label>
+        <label><input type="radio" name="q1" value="C"> C. Menyatukan partai-partai politik besar</label>
+        <label><input type="radio" name="q1" value="D"> D. Membentuk pemerintahan baru setelah proklamasi</label>
+        <label><input type="radio" name="q1" value="E"> E. Menyusun peraturan pemilu masa depan</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <strong>2. Apa dasar hukum yang digunakan dalam penyelenggaraan Pemilu 1955?</strong>
+      <div class="options">
+        <label><input type="radio" name="q2" value="A"> A. UUD 1945</label>
+        <label><input type="radio" name="q2" value="B"> B. Maklumat Wakil Presiden No. X</label>
+        <label><input type="radio" name="q2" value="C"> C. UU No. 7 Tahun 1953</label>
+        <label><input type="radio" name="q2" value="D"> D. Dekret Presiden 5 Juli 1959</label>
+        <label><input type="radio" name="q2" value="E"> E. Peraturan Pemerintah No. 1 Tahun 1950</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <strong>3. Siapa lembaga yang menyelenggarakan Pemilu 1955?</strong>
+      <div class="options">
+        <label><input type="radio" name="q3" value="A"> A. Komisi Pemilihan Umum (KPU)</label>
+        <label><input type="radio" name="q3" value="B"> B. KNIP</label>
+        <label><input type="radio" name="q3" value="C"> C. Panitia Pemilihan Indonesia (PPI)</label>
+        <label><input type="radio" name="q3" value="D"> D. MPRS</label>
+        <label><input type="radio" name="q3" value="E"> E. BPUPKI</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <strong>4. Partai-partai mana yang memperoleh kursi terbanyak dalam hasil Pemilu 1955?</strong>
+      <div class="options">
+        <label><input type="radio" name="q4" value="A"> A. NU dan PKI</label>
+        <label><input type="radio" name="q4" value="B"> B. Masyumi dan PKI</label>
+        <label><input type="radio" name="q4" value="C"> C. PNI dan Masyumi</label>
+        <label><input type="radio" name="q4" value="D"> D. PNI dan NU</label>
+        <label><input type="radio" name="q4" value="E"> E. PKI dan PSI</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <strong>5. Apa dampak politik utama setelah Pemilu 1955?</strong>
+      <div class="options">
+        <label><input type="radio" name="q5" value="A"> A. Terciptanya pemerintahan yang stabil</label>
+        <label><input type="radio" name="q5" value="B"> B. Fragmentasi politik dan kabinet sering berganti</label>
+        <label><input type="radio" name="q5" value="C"> C. Peningkatan ekspor dan ekonomi nasional</label>
+        <label><input type="radio" name="q5" value="D"> D. Penghapusan partai-partai kecil</label>
+        <label><input type="radio" name="q5" value="E"> E. Berakhirnya sistem parlementer</label>
+      </div>
+    </div>
+
+    <button type="button" id="checkBtn" class="btn">Periksa Jawaban</button>
+    <div id="result" class="result" style="display:none"></div>
+  </form>
+</section>
+
+        <footer style="margin-top:18px;color:var(--muted)">© 2025 WIDYA TAMA RIZKY RAMADHAN. All rights reserved.</footer>
+      </article>
+
+      <aside class="sidebar sheet">
+        <div class="toc">
+          <h3>Isi</h3>
+          <ul>
+            <li><a href="#intro">Pendahuluan</a></li>
+            <li><a href="#latar-detail">Latar Belakang</a></li>
+            <li><a href="#pelaksanaan-detail">Pelaksanaan</a></li>
+            <li><a href="#hasil-detal">Hasil</a></li>
+            <li><a href="#ciri-dampak">Ciri & Dampak</a></li>
+            <li><a href="#timeline">Timeline</a></li>
+            <li><a href="#kuis-full">Kuis</a></li>
+          </ul>
+        </div>
+
+        <div style="margin-top:18px">
+          <h3 style="color:var(--accent)">Ringkasan Cepat</h3>
+          <p style="color:var(--muted)">Pemilu 1955 — pemilu pertama Indonesia. Pelaksanaan dua tahap (29 Sep & 15 Des 1955). Partisipasi tinggi (~91%). Hasil plural memicu koalisi dan ketidakstabilan hingga Dekret 5 Juli 1959.</p>
+            <!-- Tambahkan gambar di bawah teks -->
+       <img src="jbg.jpg" alt="Pemilu 1955" 
+       style="display:block; margin:15px auto; width:80%; max-width:500px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2);">
+       <img src="abc.jpg" alt="Pemilu 1955" 
+       style="display:block; margin:15px auto; width:80%; max-width:500px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.2);">
+        </div>
+
+        <div style="margin-top:18px">
+      </aside>
+    </main>
+  </div>
+
+  <script>
+  // Smooth scroll for sidebar links
+  document.querySelectorAll('.toc a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      const t=document.querySelector(a.getAttribute('href'));
+      if(t) t.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  // Timeline click highlight
+  document.querySelectorAll('.timeline .event').forEach(ev=>{
+    ev.addEventListener('click', ()=>{
+      document.querySelectorAll('.timeline .event').forEach(x=>x.style.boxShadow='none');
+      ev.style.boxShadow='0 10px 30px rgba(139,58,43,0.12)';
+      ev.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+  });
+
+  // ✅ Quiz handling yang disesuaikan dengan materi
+  const answers = {
+    q1: 'B', // alasan utama: menyalurkan kedaulatan rakyat
+    q2: 'C', // dasar hukum: UU No.7 Tahun 1953
+    q3: 'C', // penyelenggara: Panitia Pemilihan Indonesia (PPI)
+    q4: 'C', // hasil tertinggi: PNI dan Masyumi
+    q5: 'B'  // dampak politik: fragmentasi & kabinet sering berganti
+  };
+
+  document.getElementById('checkBtn').addEventListener('click', ()=>{
+    const form = document.getElementById('quizForm');
+    let score=0; 
+    let total=Object.keys(answers).length; 
+    let missing=[];
+    
+    for(const q of Object.keys(answers)){
+      const els = form.elements[q];
+      let val='';
+      if(els){
+        if(els.length){ for(const r of els){ if(r.checked){ val=r.value; break; } } }
+        else { val = els.value || ''; }
+      }
+      if(!val) missing.push(q);
+      if(val===answers[q]) score++;
+    }
+
+    const res = document.getElementById('result');
+    if(missing.length){
+      res.style.display='block';
+      res.innerHTML=`<strong>Lengkapi semua soal!</strong> Soal yang belum dijawab: ${missing.map(x=>x.toUpperCase()).join(', ')}`;
+      return;
+    }
+
+    const percent = Math.round((score/total)*100);
+    res.style.display='block';
+    res.innerHTML = `<strong>Skor: ${score}/${total} (${percent}%)</strong>`+
+      `<div style="margin-top:10px"><em>Pembahasan singkat:</em><ul style='margin-top:6px'>
+        <li>1. B — Pemilu 1955 diadakan untuk menyalurkan kedaulatan rakyat.</li>
+        <li>2. C — Dasar hukumnya UU No.7 Tahun 1953.</li>
+        <li>3. C — Penyelenggaranya adalah Panitia Pemilihan Indonesia (PPI).</li>
+        <li>4. C — PNI dan Masyumi sama-sama memperoleh kursi terbanyak (57).</li>
+        <li>5. B — Dampak politiknya: fragmentasi partai dan seringnya pergantian kabinet.</li>
+      </ul></div>`;
+  });
+</script>
+</body>
+</html>
